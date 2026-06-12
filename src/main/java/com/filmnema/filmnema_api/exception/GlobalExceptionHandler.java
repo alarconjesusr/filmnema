@@ -1,8 +1,10 @@
 package com.filmnema.filmnema_api.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -45,6 +47,16 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Bad request");
         problemDetail.setDetail(exception.getMessage());
         problemDetail.setProperty("code", "FILMNEMA_BAD_REQUEST");
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ProblemDetail handleMaxUploadSizeExceeded(MaxUploadSizeExceededException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(413));
+        problemDetail.setTitle("File too large");
+        problemDetail.setDetail("The uploaded image exceeds the maximum allowed size.");
+        problemDetail.setProperty("code", "FILE_TOO_LARGE");
 
         return problemDetail;
     }

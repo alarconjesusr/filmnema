@@ -39,12 +39,12 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(MovieRequestException.class)
-    public ProblemDetail handleMovieRequest(MovieRequestException exception) {
+    @ExceptionHandler(FilmnemaException.class)
+    public ProblemDetail handleFilmnemaException(FilmnemaException exception) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Bad request");
         problemDetail.setDetail(exception.getMessage());
-        problemDetail.setProperty("code", "MOVIE_BAD_REQUEST");
+        problemDetail.setProperty("code", "FILMNEMA_BAD_REQUEST");
 
         return problemDetail;
     }

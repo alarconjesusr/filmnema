@@ -1,6 +1,8 @@
 package com.filmnema.filmnema_api.controller;
 
 import com.filmnema.filmnema_api.dto.TestRequest;
+import com.filmnema.filmnema_api.dto.TokenRequest;
+import com.filmnema.filmnema_api.dto.TokenResponse;
 import com.filmnema.filmnema_api.model.Movie;
 import com.filmnema.filmnema_api.model.TestModel;
 import com.filmnema.filmnema_api.service.TestService;
@@ -32,5 +34,10 @@ public class TestController {
     @PostMapping("/create")
     public ResponseEntity<TestModel> createTest(@Valid @RequestBody TestRequest request) {
         return ResponseEntity.ok(testService.createTest(request));
+    }
+
+    @PostMapping("/token")
+    public ResponseEntity<TokenResponse> generateToken(@Valid @RequestBody TokenRequest request) {
+        return ResponseEntity.ok(testService.generateToken(request));
     }
 }

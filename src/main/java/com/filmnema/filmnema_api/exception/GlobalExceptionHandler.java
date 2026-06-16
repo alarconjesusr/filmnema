@@ -3,6 +3,7 @@ package com.filmnema.filmnema_api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,16 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Bad request");
         problemDetail.setDetail(exception.getMessage());
         problemDetail.setProperty("code", "FILMNEMA_BAD_REQUEST");
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail handleBadCredentials(BadCredentialsException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        problemDetail.setTitle("Unauthorized");
+        problemDetail.setDetail("Invalid username or password.");
+        problemDetail.setProperty("code", "AUTHENTICATION_FAILED");
 
         return problemDetail;
     }

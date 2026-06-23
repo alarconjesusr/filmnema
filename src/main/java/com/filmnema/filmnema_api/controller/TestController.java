@@ -7,7 +7,9 @@ import com.filmnema.filmnema_api.model.Movie;
 import com.filmnema.filmnema_api.model.TestModel;
 import com.filmnema.filmnema_api.service.TestService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,12 @@ public class TestController {
         return testService.getFirstMovie()
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> adminEndpoint() {
+        return ResponseEntity.status(HttpStatus.OK).body("Solo un ADMIN puede ver este mensaje");
     }
 
     @PostMapping("/create")

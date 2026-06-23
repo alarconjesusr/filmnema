@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private static final String TOKEN_ENDPOINT = "/api/v1/test/token";
+	private static final String ADMIN_USERNAME = "admin";
 	private final JwtService jwtService;
 
 	public JwtAuthenticationFilter(JwtService jwtService) {
@@ -48,10 +49,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 
 		String username = jwtService.extractUsername(token);
+		String role = ADMIN_USERNAME.equals(username) ? "ROLE_ADMIN" : "ROLE_USER";
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 				username,
 				null,
-				List.of(new SimpleGrantedAuthority("ROLE_USER"))
+				List.of(new SimpleGrantedAuthority(role))
 		);
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
